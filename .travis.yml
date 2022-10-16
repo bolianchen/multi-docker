@@ -10,7 +10,14 @@ script:
   - docker run -e CI=true bolian/react-test npm test
 
 after_success:
-  - docker build -t bolian/multi-client ./client
-  - docker build -t bolian/multi-nginx ./nginx
-  - docker build -t bolian/multi-server ./server
-  - docker build -t bolian/multi-worker ./worker
+  - docker build -t bolianchen/multi-client ./client
+  - docker build -t bolianchen/multi-nginx ./nginx
+  - docker build -t bolianchen/multi-server ./server
+  - docker build -t bolianchen/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push bolianchen/multi-client
+  - docker push bolianchen/multi-nginx
+  - docker push bolianchen/multi-server
+  - docker push bolianchen/multi-worker
